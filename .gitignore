@@ -4,6 +4,7 @@ databases/
 errors/
 sessions/
 uploads/git 
+LICENSE
 
 # inherit https://github.com/github/gitignore/blob/master/Python.gitignore
 
