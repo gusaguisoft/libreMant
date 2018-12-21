@@ -62,3 +62,16 @@ db.define_table('empleados'
                 ,rname='org.empleados'
                 ,migrate=True
                 ,format='%(primernombre)s %(primerapellido)s')
+
+db.define_table('ubicaciones'
+                ,Field('nombre', 'string', length=75, notnull=True, unique=True)
+                ,Field('seudonimo', 'string', length=50, notnull=True, unique=True)
+                ,Field('abreviatura', 'string', length=25, notnull=True, unique=True)
+                ,Field('siglas', 'string', length=10, notnull=True, unique=True)
+                ,Field('descripcion', 'string', length=150)
+                ,Field('imagen', 'upload')
+                ,Field('activo', 'boolean')
+                ,Field('idsuperior', 'reference ubicaciones', label='Superior')
+                ,rname='org.ubicaciones'
+                ,migrate=True
+                ,format='%(seudonimo)s')

@@ -30,7 +30,7 @@ if not request.env.web2py_runtime_gae:
     # ---------------------------------------------------------------------
     # if NOT running on Google App Engine use SQLite or other DB
     # ---------------------------------------------------------------------
-    db = DAL('postgres://postgres:pato23@localhost:5432/libremant',pool_size=10,migrate=True)
+    db = DAL('postgres://postgres:1234@localhost:5432/libremant',pool_size=10,migrate=True)
     #db = DAL(configuration.get('db.uri'),
     #         pool_size=configuration.get('db.pool_size'),
     #         migrate_enabled=configuration.get('db.migrate'),
