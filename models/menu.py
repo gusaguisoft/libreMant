@@ -5,9 +5,29 @@
 # this is the main application menu add/remove items as required
 # ----------------------------------------------------------------------------------------------------------------------
 
-response.menu = [
-    (T('Home'), False, URL('default', 'index'), [])
-]
+#if not auth.user:
+if not auth.user: 
+    response.menu = [(T('Home'), False, URL('default', 'index'), [])]
+else:
+    response.menu = [
+        (T('Home'), False, URL('default', 'index'), []),
+        (T('Organismo'), False, '#',
+         [
+            (T('Areas'), False, URL('organismo', 'areas')),
+            (T('Empleados'), False, URL('organismo', 'empleados')),
+            (T('Ubicaciones'), False, URL('organismo', 'ubicaciones')),
+            (T('Tipos de Area'), False, URL('organismo', 'tiposarea'))
+         ]),
+        (T('Inventario'), False, '#',
+         [
+            (T('Equipos'), False, URL('inventario', 'equipos')),
+            (T('Tipos de Bien'), False, URL('inventario', 'tiposbien')),
+            (T('Marcas'), False, URL('inventario', 'marcas')),
+            (T('Modelos'), False, URL('inventario', 'modelos')),
+            (T('Propietarios'), False, URL('inventario', 'propietarios'))
+         ]),
+        (T('Taller'), False, URL('taller', 'asistencias'))
+    ]
 
 # ----------------------------------------------------------------------------------------------------------------------
 # provide shortcuts for development. you can remove everything below in production
@@ -46,22 +66,22 @@ if not configuration.get('app.production'):
             (T('About'), False, URL(
                 'admin', 'default', 'about/' + _app)),
         ]),
-        ('web2py.com', False, '#', [
-            (T('Download'), False,
-             'http://www.web2py.com/examples/default/download'),
-            (T('Support'), False,
-             'http://www.web2py.com/examples/default/support'),
-            (T('Demo'), False, 'http://web2py.com/demo_admin'),
-            (T('Quick Examples'), False,
-             'http://web2py.com/examples/default/examples'),
-            (T('FAQ'), False, 'http://web2py.com/AlterEgo'),
-            (T('Videos'), False,
-             'http://www.web2py.com/examples/default/videos/'),
-            (T('Free Applications'),
-             False, 'http://web2py.com/appliances'),
-            (T('Plugins'), False, 'http://web2py.com/plugins'),
-            (T('Recipes'), False, 'http://web2pyslices.com/'),
-        ]),
+#        ('web2py.com', False, '#', [
+#            (T('Download'), False,
+#             'http://www.web2py.com/examples/default/download'),
+#            (T('Support'), False,
+#             'http://www.web2py.com/examples/default/support'),
+#            (T('Demo'), False, 'http://web2py.com/demo_admin'),
+#            (T('Quick Examples'), False,
+#             'http://web2py.com/examples/default/examples'),
+#            (T('FAQ'), False, 'http://web2py.com/AlterEgo'),
+#            (T('Videos'), False,
+#             'http://www.web2py.com/examples/default/videos/'),
+#            (T('Free Applications'),
+#             False, 'http://web2py.com/appliances'),
+#            (T('Plugins'), False, 'http://web2py.com/plugins'),
+#            (T('Recipes'), False, 'http://web2pyslices.com/'),
+#        ]),
         (T('Documentation'), False, '#', [
             (T('Online book'), False, 'http://www.web2py.com/book'),
             (T('Preface'), False,
@@ -98,13 +118,13 @@ if not configuration.get('app.production'):
              'http://www.web2py.com/book/default/chapter/15'),
             (T("Buy web2py's book"), False,
              'http://stores.lulu.com/web2py'),
-        ]),
-        (T('Community'), False, None, [
-            (T('Groups'), False,
-             'http://www.web2py.com/examples/default/usergroups'),
-            (T('Twitter'), False, 'http://twitter.com/web2py'),
-            (T('Live Chat'), False,
-             'http://webchat.freenode.net/?channels=web2py'),
-        ]),
+        ])
+        #,
+#        (T('Community'), False, None, [
+#            (T('Groups'), False,
+#             'http://www.web2py.com/examples/default/usergroups'),
+#            (T('Twitter'), False, 'http://twitter.com/web2py'),
+#            (T('Live Chat'), False,
+#             'http://webchat.freenode.net/?channels=web2py'),
+#        ]),
     ]
-

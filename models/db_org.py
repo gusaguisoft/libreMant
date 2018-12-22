@@ -7,9 +7,16 @@ db.define_table('tiposarea'
                 ,Field('descripcion', 'string', length=150)
                 ,Field('imagen', 'upload')
                 ,Field('activo', 'boolean')
+                ,Field('idsuperior', 'reference tiposarea', label='Superior')
                 ,rname='org.tiposarea'
                 ,migrate=True
                 ,format='%(seudonimo)s')
+db.tiposarea.imagen.requires=IS_EMPTY_OR(IS_IMAGE(extensions=('jpeg','png','bmp','gif'),maxsize=(200,200)))
+# Se usa para visualizar el campo idsuperior con algun dato adicional y no solo con el número
+db.tiposarea.idsuperior.represent=lambda v,r: str('' if v is None else r.idsuperior.nombre)
+# Se usa para seleccionar el campo idsuperior referenciado con algun dato más representativo que el id validando su valor
+db.tiposarea.idsuperior.requires=IS_EMPTY_OR(IS_IN_DB(db, 'tiposarea.id', '%(id)s - %(nombre)s'))
+
 
 db.define_table('tiposdocumento'
                 ,Field('nombre', 'string', length=75, notnull=True, unique=True)
@@ -35,6 +42,7 @@ db.define_table('areas'
                 ,Field('idtipoarea', 'reference tiposarea', label='Tipo')
                 ,rname='org.areas'
                 ,migrate=True
+                ,plural="Tipos de Area"
                 ,format=lambda r: rutacompleta(r)) # se usa para visualizar la tabla cuando es referenciada por un campo en formularios
 
 db.areas.imagen.requires=IS_EMPTY_OR(IS_IMAGE(extensions=('jpeg','png','bmp','gif'),maxsize=(200,200)))
@@ -75,3 +83,9 @@ db.define_table('ubicaciones'
                 ,rname='org.ubicaciones'
                 ,migrate=True
                 ,format='%(seudonimo)s')
+
+db.ubicaciones.imagen.requires=IS_EMPTY_OR(IS_IMAGE(extensions=('jpeg','png','bmp','gif'),maxsize=(200,200)))
+# Se usa para visualizar el campo idsuperior con algun dato adicional y no solo con el número
+db.ubicaciones.idsuperior.represent=lambda v,r: str('' if v is None else r.idsuperior.nombre)
+# Se usa para seleccionar el campo idsuperior referenciado con algun dato más representativo que el id validando su valor
+db.ubicaciones.idsuperior.requires=IS_EMPTY_OR(IS_IN_DB(db, 'ubicaciones.id', '%(id)s - %(nombre)s'))
