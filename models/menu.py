@@ -16,7 +16,7 @@ else:
             (T('Areas'), False, URL('organismo', 'areas')),
             (T('Empleados'), False, URL('organismo', 'empleados')),
             (T('Ubicaciones'), False, URL('organismo', 'ubicaciones')),
-            (T('Tipos de Area'), False, URL('organismo', 'tiposarea'))
+            (T('Tipos de Documento'), False, URL('organismo', 'tiposdocumento'))
          ]),
         (T('Inventario'), False, '#',
          [
