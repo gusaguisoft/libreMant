@@ -48,8 +48,8 @@ db.define_table('marcas'
 
 # MODELOS
 db.define_table('modelos'
-                ,Field('idtipobien', 'reference tiposbien', notnull=True)
-                ,Field('idmarca', 'reference marcas', notnull=True)
+                ,Field('idtipobien', 'reference tiposbien', notnull=True, label='Tipo de Bien')
+                ,Field('idmarca', 'reference marcas', notnull=True, label='Marca')
                 ,Field('nombre', 'string', length=75, notnull=True, unique=True)
                 ,Field('seudonimo', 'string', length=50, notnull=True, unique=True)
                 ,Field('abreviatura', 'string', length=25, notnull=True, unique=True)
@@ -58,7 +58,7 @@ db.define_table('modelos'
                 ,Field('imagen', 'upload')
                 ,Field('activo', 'boolean')
                 ,rname='info.modelos'
-                ,format='%(seudonimo)s')
+                ,format='%(nombre)s')
 
 # EQUIPOS
 db.define_table('equipos'
@@ -67,6 +67,8 @@ db.define_table('equipos'
                 ,Field('nroserie', 'string', length=25, label='N° Serie')
                 ,Field('descripcion', 'string', length=150)
                 ,Field('idpropietario', 'reference propietarios', notnull=True, label='Propietario')
-#                ,Field('idpuesto', 'reference puestos', label='N° Puesto')
+                ,Field('idpuesto', 'reference puestos', label='N° Puesto')
                 ,rname='info.equipos'
+                ,singular='Equipo'
+                ,plural='Equipos'
                 ,format='%(matricula)s')
