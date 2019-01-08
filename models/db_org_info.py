@@ -6,6 +6,8 @@ db.define_table('puestos'
                 ,Field('idubicacion', 'reference ubicaciones', notnull=True, label='Ubicación')
                 ,Field('descripcion', 'string', length=150)
                 ,rname='info.puestos'
+                ,singular='Puesto'
+                ,plural='Puestos'
                 ,format='%(nombre)s')
 
 # PROPIETARIOS

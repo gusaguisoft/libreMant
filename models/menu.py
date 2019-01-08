@@ -26,7 +26,14 @@ else:
             (T('Modelos'), False, URL('inventario', 'modelos')),
             (T('Propietarios'), False, URL('inventario', 'propietarios'))
          ]),
-        (T('Taller'), False, URL('taller', 'asistencias'))
+        (T('Taller'), False, '#',
+         [
+            (T('Puestos'), False, URL('taller', 'puestos')),
+            (T('Gestión de Solicitudes'), False, URL('taller', 'gestionsolicitudes')),
+            (T('Marcas'), False, URL('inventario', 'marcas')),
+            (T('Modelos'), False, URL('inventario', 'modelos')),
+            (T('Propietarios'), False, URL('inventario', 'propietarios'))
+         ])
     ]
 
 # ----------------------------------------------------------------------------------------------------------------------
