@@ -19,6 +19,7 @@ db.define_table('propietarios'
                 ,Field('descripcion', 'string', length=150)
                 ,Field('imagen', 'upload')
                 ,Field('activo', 'boolean')
+                ,migrate=True
                 ,rname='info.propietarios'
                 ,format='%(seudonimo)s')
 
@@ -60,7 +61,7 @@ db.define_table('modelos'
                 ,Field('imagen', 'upload')
                 ,Field('activo', 'boolean')
                 ,rname='info.modelos'
-                ,format='%(nombre)s')
+                ,format=lambda r: r.idtipobien.abreviatura + ' ' +  r.idmarca.abreviatura + ' ' + r.nombre)
 
 # EQUIPOS
 db.define_table('equipos'

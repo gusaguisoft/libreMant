@@ -28,14 +28,14 @@ def equipospuesto():
     # request.args(0) es id de la solicitud
     puesto=db.puestos[request.args(0)]
     addbutton=gridbuttonext("buttonadd", "Agregar", URL('equipossinpuesto'))
-    
     fields=[db.equipos.id, \
             db.equipos.idmodelo, \
             db.equipos.matricula, \
             db.equipos.nroserie]
     query=(db.equipos.idpuesto==puesto.id)
     ui=myui()
-    formargs=dict(fields=['id','idmodelo','matricula','nroserie'], showid=False)
+    formargs=dict(fields=['id','idmodelo','matricula','nroserie'])
+    createargs=dict(showid=False)
     gridregs=SQLFORM.grid(query=query, \
                           fields=fields, \
                           args=request.args, \
@@ -45,7 +45,10 @@ def equipospuesto():
                           user_signature=False, \
                           maxtextlength=50, \
                           formargs=formargs,\
+                          createargs=createargs,\
                           ui=ui)
+    addbutton=gridbuttonext("buttonadd", "Agregar Equipo", URL('equiposasignables',args=(request.args(0))))
+    gridregs.insert(0, addbutton)
     tabla=db.equipos
     backurl=URL('equipospuesto')
     if request.args(-2)=="new":
@@ -61,7 +64,7 @@ def equipospuesto():
     gridregs.append(backbutton)
     return dict(titulo=strtitulo, puesto=puesto, equipospuesto=gridregs)
 
-def equipossinpuesto():
+def equiposasignables():
     # request.args(0) es id de la solicitud
     # puesto=db.puestos[request.args(0)]
     fields=[db.equipos.id, \
@@ -74,12 +77,19 @@ def equipossinpuesto():
                           fields=fields, \
                           args=request.args, \
                           searchable=True, \
-                          selectable=True, \
+                          selectable=lambda ids:redirect(URL('confirmar_equipospuesto',\
+                                                             args=(request.args(0)),\
+                                                             vars=dict(ids=ids))),
                           user_signature=False, \
                           maxtextlength=50, \
-                          formargs=formargs,\
+                          create=False,
+                          deletable=False,
+                          editable=False,
                           ui=ui)
-    backurl=URL('equipospuesto')
-    backbutton=gridbuttonext("buttonback", "Atrás", backurl)
+    backbutton=gridbuttonext("buttonback", "Volver", URL('equipospuesto'))
     gridregs.append(backbutton)
-    return dict(titulo=strtitulo, puesto=puesto, equipospuesto=gridregs)
+    return dict(equiposasignables=gridregs)
+
+def confirmar_equipospuesto():
+    
+    return locals
