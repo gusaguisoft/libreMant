@@ -121,6 +121,7 @@
 'Components and Plugins': 'Componentes y Plugins',
 'Config.ini': 'Config.ini',
 'Confirm Password': 'Confirm Password',
+'Confirmar': 'Confirmar',
 'contains': 'contiene',
 'Controller': 'Controlador',
 'Controllers': 'Controladores',

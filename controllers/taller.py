@@ -77,8 +77,8 @@ def equiposasignables():
                           fields=fields, \
                           args=request.args, \
                           searchable=True, \
-                          selectable=lambda ids:redirect(URL('confirmar_equipospuesto',\
-                                                             args=(request.args(0)),\
+                          selectable=lambda ids:redirect(URL('equiposagregados',\
+                                                             args=(request.args(0),'preguntar'),\
                                                              vars=dict(ids=ids))),
                           user_signature=False, \
                           maxtextlength=50, \
@@ -90,6 +90,26 @@ def equiposasignables():
     gridregs.append(backbutton)
     return dict(equiposasignables=gridregs)
 
-def confirmar_equipospuesto():
-    
-    return locals
+def equiposagregados():
+    # request.args(0) es id de la solicitud
+    puesto=db.puestos[request.args(0)]
+    fields=[db.equipos.id, \
+            db.equipos.idmodelo, \
+            db.equipos.matricula, \
+            db.equipos.nroserie]
+    query=(db.equipos.id.belongs(request.vars.ids))
+    if request.args(1)=='hacer':
+        titulo="Equipos agregados a Puesto"
+        for equipo in db(query).select():
+            equipo.update_record(idpuesto=puesto.id)
+    else:
+        titulo="Confirmación de Equipos a agregar al Puesto"
+    ui=myui()
+    gridregs=SQLFORM.grid(query=query, fields=fields, args=request.args, searchable=False, create=False, deletable=False, editable=False,                      sortable=False, details=False, csv=False, ui=ui)
+    if request.args(1)=='preguntar':
+        #confbutton=INPUT(_class="buttoncheck", _type="submit", _value="Confirmar")
+        confbutton=gridbuttonext("buttoncheck", "Confirmar", URL('equiposagregados',args=(puesto.id, 'hacer'),vars=request.vars))
+        gridregs.append(confbutton)
+    backbutton=gridbuttonext("buttonback", "Volver", URL('equipospuesto', args=(puesto.id)))
+    gridregs.append(backbutton)
+    return dict(titulo=titulo, puesto=puesto, equiposasignables=gridregs)
