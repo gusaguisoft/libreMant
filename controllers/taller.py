@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from gridext import *
 def puestos():
-    formargs=dict(submit_button='Aceptar', fields=['id', 'nombre', 'idarea', 'idubicacion', 'descripcion'])
+    formargs=dict(submit_button='Aceptar', fields=['id', 'nombre', 'idarea', 'idubicacion', 'idempleadoasignado', 'descripcion'])
     createargs=dict(fields=['nombre', 'idarea', 'idubicacion', 'descripcion'])
     fields=[db.puestos.id, \
             db.puestos.nombre, \
@@ -117,12 +117,19 @@ def agregar_equipos_puesto():
     gridregs.append(backbutton)
     return dict(titulo=titulo, puesto=puesto, equipos=gridregs)
 
-def puestosx():
-    formargs=dict(submit_button='Aceptar', fields=['id', 'nombre', 'idarea', 'idubicacion', 'descripcion'])
-    createargs=dict(fields=['nombre', 'idarea', 'idubicacion', 'descripcion'])
-    fields=[db.puestos.id, \
-            db.puestos.nombre, \
-            db.puestos.idarea, \
-            db.puestos.idubicacion]
-    gridregs=SQLFORM.smartgrid(db.puestos, fields=fields, formargs=formargs, createargs=createargs, user_signature=False)
-    return dict(puestos=gridregs)
+def tipossolicitud():
+    gridregs=SQLFORM.grid(db.tipossolicitud)
+    tabla=db.tipossolicitud
+    backurl=URL('tipossolicitud')
+    if request.args(-2)=="new":
+        strtitulo = "Nuevo " + tabla._singular
+    elif request.args(-3)=="view":
+        strtitulo = "Ver " + tabla._singular
+    elif request.args(-3)== "edit":
+        strtitulo = "Modificar " + tabla._singular
+    else:
+        strtitulo = tabla._plural
+        backurl=URL("default","index")
+    backbutton=gridbuttonext("buttonback", T("Back"), backurl)
+    gridregs.append(backbutton)
+    return dict(tipossolicitud=gridregs)

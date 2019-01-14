@@ -3,6 +3,7 @@
 db.define_table('puestos'
                 ,Field('nombre', 'string', length=30, notnull=True, unique=True)
                 ,Field('idarea', 'reference areas', notnull=True, label='Area')
+                ,Field('idempleado', 'reference empleados', label='Asignado a')
                 ,Field('idubicacion', 'reference ubicaciones', notnull=True, label='Ubicación')
                 ,Field('descripcion', 'string', length=150)
                 ,rname='info.puestos'
@@ -76,18 +77,28 @@ db.define_table('equipos'
                 ,plural='Equipos'
                 ,format='%(matricula)s')
 
+
+# PRIORIDADES
+#db.define_table('prioridades'
+#                ,Field('rotulo', 'string', length=40, notnull=True, unique=True)
+#                ,Field('color', 'string', length=10, notnull=True, unique=True)
+#                ,Field('imagen', 'upload')
+#                ,Field('activo', 'boolean')
+#                ,rname='info.prioridades'
+#                ,format='%(rotulo)s')
+
 # TIPOS DE SOLICITUD
 db.define_table('tipossolicitud'
-                ,Field('nombre', 'string', length=75, notnull=True, unique=True)
-                ,Field('seudonimo', 'string', length=50, notnull=True, unique=True)
+                ,Field('nombre', 'string', length=50, notnull=True, unique=True)
                 ,Field('abreviatura', 'string', length=25, notnull=True, unique=True)
-                ,Field('siglas', 'string', length=10, notnull=True, unique=True)
                 ,Field('descripcion', 'string', length=150)
                 ,Field('imagen', 'upload')
                 ,Field('activo', 'boolean')
-                ,Field('idsuperior', 'reference tiposolicitud', label='Superior')
+                ,Field('idsuperior', 'reference tipossolicitud', label='Superior')
                 ,rname='info.tipossolicitud'
-                ,format='%(seudonimo)s')
+                ,singular='Tipo de Solicitud'
+                ,plural='Tipos de Solicitud'
+                ,format='%(abreviatura)s')
 db.tipossolicitud.idsuperior.represent = lambda v,r: str('' if v is None else r.idsuperior.nombre)
 db.tipossolicitud.idsuperior.requires = IS_EMPTY_OR(IS_IN_DB(db, 'tipossolicitud.id', '%(id)s - %(nombre)s'))
 db.tipossolicitud.imagen.requires = IS_EMPTY_OR(IS_IMAGE(extensions=('jpeg','png','bmp','gif'),maxsize=(200,200)))
@@ -98,16 +109,17 @@ db.define_table('solicitudes'
                 ,Field('horasolicitud', 'time', notnull=True, required=False, label='Hora Solicitud')
                 ,Field('idempleadosolicitante', 'reference empleados', notnull=True, label='Solicitado por')
                 ,Field('idareasolicitante', 'reference areas', notnull=True, label='Area Solicitante')
-                ,Field('idtiposolicitud', 'reference tipossolicitud', notnull=True, label='Tipo') 
-                ,Field('caratula', 'string', length=512, notnull=True, label='Carátula')
+                ,Field('idtiposolicitud', 'reference tipossolicitud', notnull=True, label='Tipo')
+                ,Field('descripcion', 'string', length=100)
                 ,Field('estado', 'integer', notnull=True, default=0)
                 ,Field('fechaautorizacion', 'date', label='Fecha Autorización')
                 ,Field('horaautorizacion', 'time', label='Hora Autorización')
                 ,Field('idempleadoautorizacion', 'reference empleados', label='Autorizado por')
-                ,Field('prioridad', 'integer', notnull=True, default=0)
-                ,Field('comentarios', 'string', length=512)
+                ,Field('idpuesto', 'reference puestos', label='Puesto')
                 ,rname='info.solicitudes'
                 ,migrate=True
+                ,singular='Solicitud'
+                ,plural='Solicitudes'
                 ,format=lambda r: '('+str(r.id)+') - ' + rutacompleta(r.idareasolicitante) + ' - ' + rutacompleta(r.idtiposolicitud))
 # Los datos de los siguientes campos no los ingresa el usuario
 db.solicitudes.idareasolicitante.writable=False # se establece por CF según el área del usuario logeado con el rol adecuado

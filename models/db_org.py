@@ -44,7 +44,7 @@ db.define_table('empleados'
                 ,Field.Virtual('nombreyapellido', lambda r: r.empleados.nombre + ' ' + r.empleados.apellido)
                 ,rname='org.empleados'
                 ,migrate=True
-                ,format='%(nombreyapellido)s')
+                ,format='%(nombre)s %(apellido)s')
 
 db.define_table('ubicaciones'
                 ,Field('nombre', 'string', length=75, notnull=True, unique=True)

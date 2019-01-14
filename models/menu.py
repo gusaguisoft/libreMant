@@ -11,6 +11,14 @@ if not auth.user:
 else:
     response.menu = [
         (T('Home'), False, URL('default', 'index'), []),
+        (T('Area'), False, '#',
+         [
+            (T('Nueva Solicitud'), False, URL('area', 'nueva_solicitud')),
+            (T('Mis Solicitudes'), False, URL('area', 'mis_solicitudes')),
+            (T('Empleados'), False, URL('area', 'empleados')),
+            (T('Puestos'), False, URL('area', 'puestos')),
+            (T('Autorizar Solicitudes'), False, URL('area', 'autorizar_solicitudes'))
+         ]),
         (T('Organismo'), False, '#',
          [
             (T('Areas'), False, URL('organismo', 'areas')),
@@ -32,7 +40,8 @@ else:
             (T('Gestión de Solicitudes'), False, URL('taller', 'gestionsolicitudes')),
             (T('Marcas'), False, URL('inventario', 'marcas')),
             (T('Modelos'), False, URL('inventario', 'modelos')),
-            (T('Propietarios'), False, URL('inventario', 'propietarios'))
+            (T('Propietarios'), False, URL('inventario', 'propietarios')),
+            (T('Tipos de Solicitud'), False, URL('taller', 'tipossolicitud'))
          ])
     ]
 
