@@ -11,13 +11,22 @@ if not auth.user:
 else:
     response.menu = [
         (T('Home'), False, URL('default', 'index'), []),
+        (T('Empleado'), False, '#',
+         [
+            (T('Mis Area'), False, URL('empleado', 'mi_area')),
+            (T('Mis Compañeros'), False, URL('empleado', 'mis_compañeros')),
+            (T('Mis Solicitudes'), False, URL('empleado', 'mis_solicitudes')),
+            (T('Mis Solicitudes Registradas'), False, URL('empleado', 'mis_solicitudes_registradas')),
+            (T('Mis Solicitudes Autorizadas'), False, URL('empleado', 'mis_solicitudes_autorizadas')),
+            (T('Mis Solicitudes Enviadas'), False, URL('empleado', 'mis_solicitudes_enviadas')),
+            (T('Mi Puesto de Trabajo'), False, URL('empleado', 'mi_puesto'))
+         ]),
         (T('Area'), False, '#',
          [
-            (T('Nueva Solicitud'), False, URL('area', 'nueva_solicitud')),
-            (T('Mis Solicitudes'), False, URL('area', 'mis_solicitudes')),
+            (T('Solicitudes'), False, URL('area', 'solicitudes')),
             (T('Empleados'), False, URL('area', 'empleados')),
             (T('Puestos'), False, URL('area', 'puestos')),
-            (T('Autorizar Solicitudes'), False, URL('area', 'autorizar_solicitudes'))
+            (T('Autorización'), False, URL('area', 'autorizar_solicitudes'))
          ]),
         (T('Organismo'), False, '#',
          [

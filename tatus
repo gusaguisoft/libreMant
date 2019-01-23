@@ -1,0 +1,84 @@
+[33mcommit 9bcc951b3334472345d936cb80904f217edbf95a[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Mon Jan 14 14:02:50 2019 -0300
+
+    Primera version controlador area y cambios relacionados en modelos y otros controladores
+
+[33mcommit 029335aaab148dc203f355c0bb701c1f5dbd74b3[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Thu Jan 10 13:56:46 2019 -0300
+
+    Agregar equipos a puesto funcionando, Tablas tipossolicitud y solicitudes
+
+[33mcommit 9549307dd3c8560df520251848c18c4c40bf651c[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Wed Jan 9 14:17:26 2019 -0300
+
+    Agregar Equipos a Puesto funcionando
+
+[33mcommit db6a7164642a5a24b5ef8c27545e72f9b1bcea1e[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Tue Jan 8 14:28:35 2019 -0300
+
+    Primera version de controlares registro equipos de puesto
+
+[33mcommit 6388bf55d164956f88563785b9634e87489fe5d3[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Tue Jan 8 07:22:54 2019 -0300
+
+    Se agrega primera versión controlador taller
+
+[33mcommit 0d35562358b036a7abd167498465d1b7b921fff7[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Sun Dec 30 15:51:14 2018 -0300
+
+    Primera versión de modelo Inventario
+
+[33mcommit 04389ef8152e05152e406e12a2a79c000cedb9f2[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Sat Dec 22 21:21:56 2018 -0300
+
+    Se agregan ABMs  tablas del modelo organismo
+
+[33mcommit 5c21b8ecc2f6a870d8d1dfcfb199814680f62ea0[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Sat Dec 22 16:44:31 2018 -0300
+
+    Primera version de controlador organismo
+
+[33mcommit 94c529b60ead264af58c56823be47716f4777fa9[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Sat Dec 22 12:55:56 2018 -0300
+
+    Se agrega modelo db_org_info (tablas equipos, puestos y secundarias)
+
+[33mcommit f5b5a125ee3aa15acc00991e93452637ff2f4aef[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Fri Dec 21 22:41:01 2018 -0300
+
+    Se agrega tablas marcas y modelos
+
+[33mcommit cfcfd28d11fc85238cc4968d7fdff5dc99e90533[m
+Merge: 38b163a d8201e2
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Fri Dec 21 19:16:06 2018 -0300
+
+    Merge branch 'master' of https://github.com/gusaguisoft/libreMant
+
+[33mcommit 38b163a9a57a5dca740d85cf3045b68c48b2ca64[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Fri Dec 21 18:37:21 2018 -0300
+
+    Segundo  Commit (incluye modelo db_funciones)
+
+[33mcommit 1d3adefc64b90602b330234c7822f6c8bb43c87d[m
+Author: gusaguisoft <gusaguisoft@yahoo.com>
+Date:   Fri Dec 21 17:33:49 2018 -0300
+
+    Primer Commit (con modelo db_org)
+
+[33mcommit d8201e2e749fd8ecde93f72405a38c2360206d00[m
+Author: gusaguisoft <31443237+gusaguisoft@users.noreply.github.com>
+Date:   Fri Dec 21 16:32:06 2018 -0300
+
+    Initial commit

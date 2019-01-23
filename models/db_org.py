@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+def nombreyapellido(r):
+    return (r.nombre or '') + ' ' + (r.apellido or '')
 
 db.define_table('tiposdocumento'
                 ,Field('nombre', 'string', length=75, notnull=True, unique=True)
@@ -44,7 +46,7 @@ db.define_table('empleados'
                 ,Field.Virtual('nombreyapellido', lambda r: r.empleados.nombre + ' ' + r.empleados.apellido)
                 ,rname='org.empleados'
                 ,migrate=True
-                ,format='%(nombre)s %(apellido)s')
+                ,format=lambda r:nombreyapellido(r))
 
 db.define_table('ubicaciones'
                 ,Field('nombre', 'string', length=75, notnull=True, unique=True)

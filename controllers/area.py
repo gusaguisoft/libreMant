@@ -1,25 +1,40 @@
 # -*- coding: utf-8 -*-
 from gridext import *
+import datetime
 usuarioactual=db.auth_user[auth.user_id]
 empleadoactual=db.empleados[usuarioactual.idempleado]
 areaactual=db.areas[empleadoactual.idarea]
 
-def mis_solicitudes():
-    db.solicitudes.idempleadosolicitante.default=empleadoactual.id
+def solicitudes():
     db.solicitudes.idareasolicitante.default=areaactual.id
     db.solicitudes.estado.default=0
-    db.solicitudes.idpuesto.default=db(db.puestos.idempleado==empleadoactual.id & db.puestos.idarea==areaactual.id).select.first.id
+    #db.solicitudes.idpuesto.default=db(db.puestos.idempleado==empleadoactual.id & db.puestos.idarea==areaactual.id).select.first.id
     fields=[db.solicitudes.id, \
-            db.solicitudes.fechasolicitud, \
+            db.solicitudes.fecharegistro, \
+            db.solicitudes.idempleadoregistro, \
             db.solicitudes.idtiposolicitud, \
-            db.solicitudes.descripcion, \
+            db.solicitudes.caratula, \
             db.solicitudes.idpuesto, \
+            db.solicitudes.fechaautorizacion, \
+            db.solicitudes.idempleadoautorizacion, \
+            db.solicitudes.fechaenvio, \
+            db.solicitudes.idempleadoenvio, \
             db.solicitudes.estado]
-    createargs=dict(fields=['id','idareasolicitante', 'idtiposolicitud', 'descripcion'],\
-                    showid=False, submit_button='Registrar')
+    #qpuestos=db.puestos.idarea==areaactual.id
+    createargs=dict(fields=['id','idareasolicitante', 'idtiposolicitud', 'descripcion', 'idpuesto'],\
+                    showid=False, submit_button='Enviar')
+    #db.solicitudes.idpuesto.requires = IS_EMPTY_OR(IS_IN_DB(db.puestos.idarea==areaactual.id, db.puestos.id))
+    db.solicitudes.idpuesto.requires = IS_EMPTY_OR(IS_IN_DB(db(db.puestos.idarea==areaactual.id), 'puestos.id', '%(nombre)s'))
     ui=myui()
     links=[lambda row: gridbuttonext(buttonclass="buttonprint",buttontext="Imprimir",buttonurl=URL("area","imprimir",args=[row.id]))]
-    query=(db.solicitudes.idempleadosolicitante==empleadoactual.id) & (db.solicitudes.idareasolicitante==areaactual.id)
+    solicitudes_area=(db.solicitudes.idareasolicitante==areaactual.id)
+    no_autorizables=(db.solicitudes.estado==0) & (db.solicitudes.idtiposolicitud.autorizable==False) 
+    autorizables=(db.solicitudes.estado==0) & (db.solicitudes.idtiposolicitud.autorizable==True) 
+    autorizadas=(db.solicitudes.estado==1)
+    enviadas=(db.solicitudes.estado==2)
+    recibidas=(db.solicitudes.estado==3)
+    gestionadas=(db.solicitudes.estado==4)
+    cumplidas=(db.solicitudes.estado==5)
     orderby=~db.solicitudes.id
     editable=lambda row: True if row.estado==0 else False
     deletable=lambda row: True if ((row.estado==0) and (not row.idtiposolicitud.autorizable)) else False

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+import datetime
 # PUESTOS
 db.define_table('puestos'
                 ,Field('nombre', 'string', length=30, notnull=True, unique=True)
                 ,Field('idarea', 'reference areas', notnull=True, label='Area')
-                ,Field('idempleado', 'reference empleados', label='Asignado a')
                 ,Field('idubicacion', 'reference ubicaciones', notnull=True, label='Ubicación')
                 ,Field('descripcion', 'string', length=150)
                 ,rname='info.puestos'
@@ -98,35 +98,64 @@ db.define_table('tipossolicitud'
                 ,rname='info.tipossolicitud'
                 ,singular='Tipo de Solicitud'
                 ,plural='Tipos de Solicitud'
-                ,format='%(abreviatura)s')
+                ,format=lambda r: rutacompleta(r))
 db.tipossolicitud.idsuperior.represent = lambda v,r: str('' if v is None else r.idsuperior.nombre)
 db.tipossolicitud.idsuperior.requires = IS_EMPTY_OR(IS_IN_DB(db, 'tipossolicitud.id', '%(id)s - %(nombre)s'))
 db.tipossolicitud.imagen.requires = IS_EMPTY_OR(IS_IMAGE(extensions=('jpeg','png','bmp','gif'),maxsize=(200,200)))
 
 # SOLICITUDES
+def fechahora(f, h):
+    if isinstance(f, date):
+        if not isinstance(h,time):
+            h=datetime.time()
+        return datetime.datetime.combine(f,h)
+    else:
+        return ''
+
 db.define_table('solicitudes'
-                ,Field('fechasolicitud', 'date', notnull=True, required=False, label='Fecha Solicitud')
-                ,Field('horasolicitud', 'time', notnull=True, required=False, label='Hora Solicitud')
-                ,Field('idempleadosolicitante', 'reference empleados', notnull=True, label='Solicitado por')
-                ,Field('idareasolicitante', 'reference areas', notnull=True, label='Area Solicitante')
-                ,Field('idtiposolicitud', 'reference tipossolicitud', notnull=True, label='Tipo')
-                ,Field('descripcion', 'string', length=100)
+                ,Field('idempleadoregistro', db.empleados, notnull=True, label='Registrado por')
+                ,Field('fecharegistro', 'date', notnull=True, required=False, label='Fecha Registro')
+                ,Field('horaregistro', 'time', notnull=True, required=False, label='Hora Registro')
+                ,Field('idareasolicitante', db.areas, notnull=True, label='Area Solicitante')
+                ,Field('idtiposolicitud', db.tipossolicitud, notnull=True, label='Tipo')
+                ,Field('caratula', 'string', length=100 )
+                ,Field('descripcion', 'text')
+                ,Field('idpuesto', db.puestos, label='Puesto')
                 ,Field('estado', 'integer', notnull=True, default=0)
-                ,Field('fechaautorizacion', 'date', label='Fecha Autorización')
-                ,Field('horaautorizacion', 'time', label='Hora Autorización')
-                ,Field('idempleadoautorizacion', 'reference empleados', label='Autorizado por')
-                ,Field('idpuesto', 'reference puestos', label='Puesto')
+                ,Field('idempleadoenvio', db.empleados, label='Enviado por')
+                ,Field('fechaenvio', 'date', label='Fecha Envío')
+                ,Field('horaenvio', 'time', label='Hora Envío')
+                ,Field.Virtual('registro', lambda r: fechahora(r.fecharegistro, r.horaregistro))
+                ,Field.Virtual('envio', lambda r: fechahora(r.fechaenvio, r.horaenvio))
                 ,rname='info.solicitudes'
                 ,migrate=True
                 ,singular='Solicitud'
                 ,plural='Solicitudes'
                 ,format=lambda r: '('+str(r.id)+') - ' + rutacompleta(r.idareasolicitante) + ' - ' + rutacompleta(r.idtiposolicitud))
-# Los datos de los siguientes campos no los ingresa el usuario
-db.solicitudes.idareasolicitante.writable=False # se establece por CF según el área del usuario logeado con el rol adecuado
-db.solicitudes.idempleadosolicitante.writable=False # se establece por CF según el usuario logeado con el rol adecuado
-db.solicitudes.fechasolicitud.writable=False # la establece el servidor de BD
-db.solicitudes.horasolicitud.writable=False # la establece el servidor de BD
-db.solicitudes.idempleadoautorizacion.writable=False # se establece por CF según el usuario logeado con el rol adecuado
-db.solicitudes.fechaautorizacion.writable=False # la establece el servidor de BD
-db.solicitudes.horaautorizacion.writable=False # la establece el servidor de BD
-db.solicitudes.estado.writable=False # se establece por CF según la opción elegida
+
+# campos no modificables por el usuario
+db.solicitudes.idempleadoregistro.writable=False # el usuario que inició sesión
+db.solicitudes.idareasolicitante.writable=False # el área del usuario que inició sesión
+db.solicitudes.fecharegistro.writable=False # la fecha del servidor
+db.solicitudes.horaregistro.writable=False # la hora del servidor
+db.solicitudes.idempleadoenvio.writable=False # el usuario que inicia sesión
+db.solicitudes.fechaenvio.writable=False # la fecha del servidor
+db.solicitudes.horaenvio.writable=False # la hora del servidor
+db.solicitudes.estado.writable=False # estado según las operaciones realizadas en el sistema
+
+# representación de campos
+db.solicitudes.idempleadoenvio.represent=lambda value, row: apellidoynombre(row) if value else ''
+db.solicitudes.fecharegistro.represent=lambda value, row: value.strftime('%d/%m/%Y') if value else ''
+db.solicitudes.horaregistro.represent=lambda value, row: value.strftime('%H:%M:%S') if value else ''
+db.solicitudes.fechaenvio.represent=lambda value, row: value.strftime('%d/%m/%Y') if value else ''
+db.solicitudes.horaenvio.represent=lambda value, row: value.strftime('%H:%M:%S') if value else ''
+db.solicitudes.registro.represent=lambda value, row: value.strftime('%d/%m/%Y %H:%M:%S') if value else ''
+db.solicitudes.envio.represent=lambda value, row: value.strftime('%d/%m/%Y %H:%M:%S') if value else ''
+
+
+# antes de agregar actualiza fecha y hora
+def antes_agregar_solicitud(cambios):
+    fechahora=datetime.datetime.now()
+    cambios['fecharegistro']=datetime.date.today()
+    cambios['horaregistro']=datetime.time(fechahora.hour, fechahora.minute, fechahora.second)
+db.solicitudes._before_insert.append(lambda cambios: antes_agregar_solicitud(cambios))
